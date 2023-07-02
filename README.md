@@ -17,3 +17,15 @@ Our implementation consists of a main file and four other libraries that were al
 :heavy_check_mark: Also, there is a library that concentrates machine learning implementations. 
 
 :heavy_check_mark: Finally, there is a library of various utilities, such as writing files in comma-separated values format.
+
+### How to Run the Application
+
+Organization of default folders and files
+
+Data input is done following the structure 'classroom/topic/tasks'. All tasks must be in text format.
+```
+ROOT_INPUT = "db-input"
+ROOT_OUTPUT = "db-output"
+ROOT_TREE = "images/"
+OUTPUT_FILE = "csv-output-extrator.csv"
+```
