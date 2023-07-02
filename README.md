@@ -18,14 +18,41 @@ Our implementation consists of a main file and four other libraries that were al
 
 :heavy_check_mark: Finally, there is a library of various utilities, such as writing files in comma-separated values format.
 
-### How to Run the Application
+### Organization of Default Folders and Files
 
-Organization of default folders and files
-
-Data input is done following the structure 'classroom/topic/tasks'. All tasks must be in text format.
+Data input takes place following the 'classroom/topic/student/tasks' structure. All tasks must be in text format.
 ```
 ROOT_INPUT = "db-input"
+```
+The data output folder corresponds to the result of the tasks preprocessing. They are stored in a single file in text format for each student.
+```
 ROOT_OUTPUT = "db-output"
+```
+The output images corresponding to the dendrograms and decision trees are sent to the images folder after finishing the task processing.
+```
 ROOT_TREE = "images/"
+```
+The main student cluster file is stored in *.csv format in the root of the project.
+```
 OUTPUT_FILE = "csv-output-extrator.csv"
 ```
+
+### How to Run the Application
+- To run the application, just store the source code tasks in the ROOT_INPUT folder, following the 'classroom/topic/student/*.c' structure.
+
+- The input parameters for the computational model are configured in a default way, but they can be passed in the function call or changed in the algorithm constants.
+
+- The main function is given the classroom, the learning topic and the number of clusters. Furthermore, it is possible to get a debbuger of the executions by passing "_TRUE_" to "_printador_".
+```
+main(turma="T1", lista="Lista01", printador=False, num_clusters=4)
+```
+
+### Scientific Divulgation
+The preliminary results obtained in the execution of our computational model were disclosed to the scientific community.
+
+> BERNARDO SILVA, D.; RIBEIRO CARVALHO, D.; SILLA, C. N.. 2022. A clustering-based computational model to group students with similar programming skills from automatic source code analysis using novel fea- tures. Submitted to Transactions on Learning Technologies (TLT).
+
+### Colaborators
+
+| [<img src="./doc/fotoDavi.png" width=115><br><sub>Davi Bernardo</sub>](https://github.com/davibernardos) | [<img src="./doc/fotoDeborah.png" width=115><br><sub>Deborah Carvalho</sub>]() | [<img src="./doc/fotoSilla.png" width=115><br><sub>Carlos Silla</sub>]() |
+| :---: | :---: | :---:
