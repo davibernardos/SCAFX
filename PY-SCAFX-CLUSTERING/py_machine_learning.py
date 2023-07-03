@@ -1,6 +1,5 @@
 # MACHINE LEARNING TECHNIQUES
 # -----------------------------------------------
-
 import math
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,7 +26,7 @@ plt.style.use('seaborn-whitegrid')
 # ------------------------------------------------------------
 ## OUTPUT: DF acrescenta uma coluna com os Cluster (GA, GB, GC...)
 ## ------------------------------------------------------------
-def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisMetric, thisMethod):
+def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisMetric, thisMethod, ls_groups):
     dfx = df[df.iloc[:].sum(axis=1) == 0] 
     df = df[df.iloc[:].sum(axis=1) > 0]
     
@@ -77,14 +76,14 @@ def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisM
     # Está sendo utilizada a média do grupo para não prejudicar os grupos menores
     dffdp = (df.groupby(['Cluster']).mean().sum(axis=1)).sort_values(ascending=False) 
 
-    a,b,c,d = dffdp.index.tolist()
-
+    #a,b,c,d = dffdp.index.tolist()
+    
     # Um novo data frame foi criado para não ocorrer warning devido a indexação encadeada
     new_df = df.copy()
-    new_df.loc[new_df['Cluster'] == a, "Cluster"] = 'GA'
-    new_df.loc[new_df['Cluster'] == b, "Cluster"] = 'GB'
-    new_df.loc[new_df['Cluster'] == c, "Cluster"] = 'GC'    
-    new_df.loc[new_df['Cluster'] == d, "Cluster"] = 'GD'
+    
+    for (group, ordem) in zip(ls_groups, dffdp.index.tolist()):
+        new_df.loc[new_df['Cluster'] == ordem, "Cluster"] = group
+
     #------------------------------------------------------------
     return (new_df, dfx, round(c,2))
 
@@ -92,13 +91,11 @@ def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisM
 
 # DECISION TREE
 # ------------------------------------------------------------
-def classificador(df, features_cols, output_tree, printador):
+def classificador(df, features_cols, output_tree, printador, ls_groups):
     clf = DecisionTreeClassifier(max_depth=None, random_state=0, criterion='entropy')
     clf.fit(df[features_cols], df['Cluster'])
-
-    cn = ['GA', 'GB', 'GC', 'GD']
     
-    dot_data = tree.export_graphviz(clf, feature_names = features_cols, class_names = cn, out_file=None,
+    dot_data = tree.export_graphviz(clf, feature_names = features_cols, class_names = ls_groups, out_file=None,
                                     filled = True, rounded = False, special_characters=True)
     
     graph = pydotplus.graph_from_dot_data(dot_data)

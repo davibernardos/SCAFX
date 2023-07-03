@@ -2,12 +2,14 @@
 # ------------------------------------------------------------
 
 import os
+from py_constants import T1, T2, T3, T4, T5
+from py_constants import C1, C2, C3
 
 def get_printador(features):
     print(features)
     
 def get_printador_cab(id_aluno):
-    print("\nAluno {}".format(id_aluno))
+    print("\nStudent {}".format(id_aluno))
     print("-------------------------------")
        
 def get_migracao(ls_labels):
@@ -36,28 +38,29 @@ def mkdirOutputFolder(output_folder):
         os.mkdir(output_folder)
         
 def studentsIdentifier(ls_turma):    
-    if ls_turma == "T1":
+    if ls_turma == C1:
         start_stud = 101
-    elif ls_turma == "T2":
+    elif ls_turma == C2:
         start_stud = 201
-    elif ls_turma == "T3":
+    elif ls_turma == C3:
         start_stud = 301
     # ---------------------        
     return(start_stud)
 
-def columnsIdentifier(ls_lista):    
-    if ls_lista == "Lista01":
-        column_names = ['NF','NP','NC','NR','Cluster']
-    elif ls_lista == "Lista02":
-        column_names = ['NPt_s','NAdd_s','NPt_ds','NAdd_ds','Cluster']
-    elif ls_lista == "Lista03":
-        column_names = ['NStr','NStrM','NStrT','NStrI','NStrC','Cluster'] 
-    elif ls_lista == "Lista04":
-        column_names = ['NFRec','NCRec','NIFPar','NRRec','NRNRec','Cluster']
-    elif ls_lista == "Lista05":
-        column_names = ['NSizeof','NMalloc','NFree','Cluster']                
-    # ---------------------  
-    return(column_names)
+def columnsIdentifier(ls_lista):
+    
+    column_names = {
+        T1: ['NF', 'NP', 'NC', 'NR', 'Cluster'],
+        T2: ['NPt_s', 'NAdd_s', 'NPt_ds', 'NAdd_ds', 'Cluster'],
+        T3: ['NStr', 'NStrM', 'NStrT', 'NStrI', 'NStrC', 'Cluster'],
+        T4: ['NFRec', 'NCRec', 'NIFPar', 'NRRec', 'NRNRec', 'Cluster'],
+        T5: ['NSizeof', 'NMalloc', 'NFree', 'Cluster']
+    }
+    ##columns[ls_lista].remove('Cluster')
+    #columns[ls_lista].append("Cluster")
+    # ---------------------
+    return column_names.get(ls_lista, [])
+
 
 def writeHierarchicalCSV(df, column_names, output_file, dfx):
     # write submissions on CSV
