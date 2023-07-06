@@ -47,6 +47,10 @@ def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisM
     #labelList = range(start_stud, len(df)+start_stud) 
     labelList = df.index.tolist()
     
+    ## Elbow method
+    #------------------------------------------------------------
+    #getElbow(Z, output_cluster, )
+    
     c, coph_dists = cophenet(Z, pdist(df))
     cut = Z[cutting_height][2]
     
@@ -67,7 +71,6 @@ def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisM
     print("\n>>> AGGLOMERATIVE HIERARCHICAL ({}, {})".format(thisMetric, thisMethod))
     print("Cophenetic Correlation Coefficient: {} \n{}".format(round(c,2), cluster.labels_))
     
-    
     #------------------------------------------------------------
     if not 'Cluster' in df:
         df.insert(len(features_cols), 'Cluster', cluster.labels_)        
@@ -84,10 +87,41 @@ def agrupador(df, features_cols, start_stud, output_cluster, num_clusters, thisM
     for (group, ordem) in zip(ls_groups, dffdp.index.tolist()):
         new_df.loc[new_df['Cluster'] == ordem, "Cluster"] = group
 
+    #------------------------------------------------------------    
+    print("\n\n>>> EXTRACTED FEATURES: \n {}".format(new_df))    
+    getOverview(new_df)
+    
+    
     #------------------------------------------------------------
     return (new_df, dfx, round(c,2))
 
 
+# OVERVIEW CLUSTERS
+# ------------------------------------------------------------
+def getOverview(df_clusters):
+    midpoint = df_clusters.groupby('Cluster').mean()
+    print("\n\n>>> MIDPOINT CALCULATION: \n {}".format(midpoint))
+
+    
+
+# ELBOW METHOD
+# ------------------------------------------------------------
+def getElbow(Z, output):
+    last = Z[-10:, 2]
+    last_rev = last[::-1]
+    idxs = np.arange(1, len(last) + 1)
+    plt.plot(idxs, last_rev)
+
+    acceleration = np.diff(last, 2)
+    acceleration_rev = acceleration[::-1]
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Euclidean distance')
+    plt.grid()
+    plt.savefig('elbow.pdf', bbox_inches='tight')
+    k = acceleration_rev.argmax() + 2
+    #print("\n>>> ELBOW METHOD\n")
+    print ("clusters: {}".format(k))
+    
 
 # DECISION TREE
 # ------------------------------------------------------------
